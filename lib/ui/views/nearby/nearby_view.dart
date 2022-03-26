@@ -1,28 +1,29 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:health/datamodels/pharmacy/pharmacy_model.dart';
 import 'package:health/ui/shared/app_colors.dart';
 import 'package:health/ui/shared/shared_styles.dart';
 import 'package:health/ui/shared/ui_helpers.dart';
-
 import 'package:health/ui/widgets/dumb_widgets/image_builder.dart';
+import 'package:health/ui/widgets/dumb_widgets/input_field.dart';
 import 'package:health/ui/widgets/dumb_widgets/map_view.dart';
 import 'package:health/ui/widgets/dumb_widgets/placeholder_image.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
-
 import 'nearby_viewmodel.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 const double DEFAULT_HEIGHT = 250;
 final kDefaultLogo = '';
 
-class NearbyView extends StatelessWidget {
+class NearbyView extends HookWidget {
   const NearbyView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final searchController = useTextEditingController();
     final mediaQuery = MediaQuery.of(context);
     final width = mediaQuery.size.width;
     return ViewModelBuilder<NearbyViewModel>.reactive(
@@ -55,6 +56,53 @@ class NearbyView extends StatelessWidget {
                           items: model.allPharmacies,
                           height: 188,
                           width: width,
+                        ),
+                      ),
+                      Expanded(
+                        child: SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 13,
+                              left: 25,
+                              right: 25,
+                            ),
+                            child: SizedBox(
+                              child: InputField(
+                                fieldHeight: 50,
+                                boxDecoration: BoxDecoration(
+                                    color: kcPrimaryColor.withOpacity(0.4),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(50),
+                                    )),
+                                prefixIcon: Icon(
+                                  CupertinoIcons.search,
+                                  color: kcPrimaryColor,
+                                  size: 20,
+                                ),
+                                textInputAction: TextInputAction.done,
+                                placeholder: 'Search ',
+                                onChanged: model.onChange,
+                                controller: searchController,
+                                hasFocusedBorder: false,
+                                hasInputDecoration: false,
+                                maxLine: 1,
+                                suffixIcon: searchController.text.isNotEmpty
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          searchController.text = '';
+                                          model.onChange('');
+                                          FocusScope.of(context).unfocus();
+                                        },
+                                        child: Icon(
+                                          CupertinoIcons.clear,
+                                          color: kcPrimaryColor,
+                                          size: 20,
+                                        ),
+                                      )
+                                    : null,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       //  Align(
@@ -180,7 +228,7 @@ class PharmacyCard extends ViewModelWidget<NearbyViewModel> {
                               enabled: true,
                             )),
                       ),
-                      if (pharmacy.distance < 0.4)
+                      if (pharmacy.distance < 0.9)
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Container(

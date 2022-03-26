@@ -80,7 +80,7 @@ class InputField extends StatelessWidget {
           duration: const Duration(milliseconds: 300),
           opacity: isReadOnly ? 0.3 : 1.0,
           child: Container(
-            // height: smallVersion ? 40 : fieldHeight,
+            height: smallVersion ? 40 : fieldHeight,
             clipBehavior: boxDecoration != null ? Clip.antiAlias : Clip.none,
             alignment: Alignment.centerLeft,
             decoration: boxDecoration ?? null,

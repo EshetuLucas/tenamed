@@ -26,7 +26,7 @@ class GoogleMapPage extends StatelessWidget {
           markerId: MarkerId(element.phoneNumber1),
           draggable: true,
           position: LatLng(element.lat, element.lng),
-          icon: element.distance > 0.4 ? markerbitmap : nearbyMarkerbitmap,
+          icon: element.distance > 0.9 ? markerbitmap : nearbyMarkerbitmap,
         ),
       );
     });

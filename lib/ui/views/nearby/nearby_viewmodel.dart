@@ -25,11 +25,6 @@ class NearbyViewModel extends FutureViewModel<List<Pharmacy>?> {
   double get lat => _lat;
   double _lng = 0;
   double get lng => _lng;
-  @override
-  Future<List<Pharmacy>?> futureToRun() async {
-    await getLocation();
-    return await _pharmacyService.getAllPharmacy();
-  }
 
   Pharmacy? _currentActivePharmacy;
   Pharmacy? get currentActivePharmacy => _currentActivePharmacy;
@@ -47,6 +42,19 @@ class NearbyViewModel extends FutureViewModel<List<Pharmacy>?> {
     return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
         .buffer
         .asUint8List();
+  }
+
+  bool _isSearchActive = false;
+  bool get isSearchActive => _isSearchActive;
+
+  String _searchKeyWord = '';
+
+  void onChange(String value) {
+    log.i(value);
+    _searchKeyWord = value;
+    _isSearchActive = _searchKeyWord.isNotEmpty;
+
+    notifyListeners();
   }
 
   late BitmapDescriptor markerbitmap;
@@ -77,11 +85,26 @@ class NearbyViewModel extends FutureViewModel<List<Pharmacy>?> {
   List<Pharmacy> _allPharmacies = [];
   List<Pharmacy> get allPharmacies {
     _allPharmacies.sort((a, b) => a.distance.compareTo(b.distance));
+    if (isSearchActive) {
+      return List.from(
+        _allPharmacies.reversed
+            .where((element) => element.name.toLowerCase().contains(
+                  _searchKeyWord.toLowerCase(),
+                ))
+            .toList(),
+      );
+    }
+
     return _allPharmacies;
   }
 
   List<Pharmacy> _nearByPharmacies = [];
   List<Pharmacy> get nearByPharmacies => _nearByPharmacies;
+  @override
+  Future<List<Pharmacy>?> futureToRun() async {
+    await getLocation();
+    return await _pharmacyService.getAllPharmacy();
+  }
 
   @override
   void onData(List<Pharmacy>? data) {

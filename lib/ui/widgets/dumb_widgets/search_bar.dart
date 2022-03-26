@@ -9,10 +9,12 @@ class SearchBar extends StatelessWidget {
   final TextEditingController controller;
   final Function(String)? onChange;
   final Function()? onClose;
+  final String placeHolder;
   const SearchBar({
     this.onChange,
     required this.loading,
     required this.controller,
+    this.placeHolder = 'Search for medicines',
     this.onClose,
     Key? key,
   }) : super(key: key);
@@ -47,7 +49,7 @@ class SearchBar extends StatelessWidget {
             textInputAction: TextInputAction.done,
             onChanged: onChange,
             controller: controller,
-            placeholder: 'Search for medicines',
+            placeholder: placeHolder,
             hasFocusedBorder: false,
             hasInputDecoration: false,
             maxLine: 1,
