@@ -35,28 +35,30 @@ class ProfileUploadViewModel extends BaseViewModel {
       isScrollControlled: false,
       variant: BottomSheetType.MEDIA_UPLOADING,
     );
-    // if (result != null) {
-    //   try {
-    //     _selectedImage = await runBusyFuture(
-    //       _mediaService.pickMedia(
-    //         mediaSourceType: result.data,
-    //         isProfilePic: true,
-    //         cropImage: true,
-    //       ),
-    //     );
-    //   } catch (e) {
-    //     log.e('Profile image select failed. $e');
-    //     await _dialogService.showCustomDialog(
-    //       variant: DialogType.ERROR,
-    //       title: 'Something went wrong!',
-    //       description: 'Please try again',
-    //     );
-    //   }
-    // }
+    if (result != null) {
+      try {
+        _selectedImage = await runBusyFuture(
+          _mediaService.pickMedia(
+            mediaSourceType: result.data,
+            isProfilePic: true,
+            cropImage: true,
+          ),
+        );
+      } catch (e) {
+        log.e('Profile image select failed. $e');
+        await _dialogService.showCustomDialog(
+          variant: DialogType.ERROR,
+          title: 'Something went wrong!',
+          description: 'Please try again',
+        );
+      }
+    }
   }
 
   Future<void> onUpload() async {
     log.i('_selectedImage:${_selectedImage!.absolute.path}');
+    _navigationService.back();
+    return;
     setBusy(true);
 
     try {

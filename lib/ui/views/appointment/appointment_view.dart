@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health/ui/shared/widgets/kunet_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 import 'appointment_viewmodel.dart';

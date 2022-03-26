@@ -13,6 +13,7 @@ import 'package:health/services/post_service.dart';
 import 'package:health/services/user_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const String POST_BUSY_KEY = 'Post busy key';
 const String FOLLOW_BUTTON_BUSY_KEY = 'Follow button key';
@@ -236,45 +237,71 @@ class EntertainersViewModel extends FutureViewModel<List<Post>> {
     }
   }
 
+  void onItemTap(String name, List<Map<String, dynamic>> items) {
+    String? buttonName;
+    switch (name) {
+      case 'Lab Tests':
+        buttonName = 'Book Now';
+
+        break;
+      case 'Beauty':
+        buttonName = 'Add to cart';
+
+        break;
+      case 'Fitness':
+        buttonName = 'Add to cart';
+
+        break;
+      default:
+    }
+    log.i('name:$name, items:$items');
+    if (name == 'Our Stores' || name == 'Generics') return;
+    _navigationService.navigateTo(
+      Routes.iteamCategoryView,
+      arguments: IteamCategoryViewArguments(
+          items: items, name: name, buttonName: buttonName),
+    );
+  }
+
   Future<void> onFilter() async {
     log.i('');
 
-    // final result = await _bottomSheetService.showCustomSheet(
-    //   isScrollControlled: false,
-    //   variant: BottomSheetType.FILTER,
-    // );
-    // if (result != null) {
-    //   setPostsBusy(true);
-    //   if (result.data is Filter) {
-    //     Filter filter = result.data as Filter;
+    final result = await _bottomSheetService.showCustomSheet(
+      isScrollControlled: false,
+      variant: BottomSheetType.FILTER,
+    );
+    if (result != null) {
+      setPostsBusy(true);
+      if (result.data is Filter) {
+        Filter filter = result.data as Filter;
 
-    //     if (filter.platformId != -1) {
-    //       for (Platform platform in platforms) {
-    //         if (platform.id == filter.platformId) {
-    //           for (Sector sector in sectors) {
-    //             if (sector.id == platform.sectors!.id) {
-    //               _currentIndex = sectors.indexOf(sector);
-    //               _selectedPlatformIndex = sectorPlatforms.indexOf(platform);
-    //               updateTags(1, platform.name);
+        if (filter.platformId != -1) {
+          for (Platform platform in platforms) {
+            if (platform.id == filter.platformId) {
+              for (Sector sector in sectors) {
+                if (sector.id == platform.sectors!.id) {
+                  _currentIndex = sectors.indexOf(sector);
+                  _selectedPlatformIndex = sectorPlatforms.indexOf(platform);
+                  updateTags(1, platform.name);
 
-    //               break;
-    //             }
-    //           }
-    //           _categoryIndex = filter.categoryId ?? -1;
-    //           _subcategoryIndex = filter.subCategoryId ?? -1;
+                  break;
+                }
+              }
+              _categoryIndex = filter.categoryId ?? -1;
+              _subcategoryIndex = filter.subCategoryId ?? -1;
 
-    //           break;
-    //         }
-    //       }
-    //     }
-    //     if (filter.countryName != null) {
-    //       setCurrentCountry(filter.countryName!);
-    //       updateTags(0, _currentCountry);
-    //     }
-    //   }
-    //   setPostsBusy(false);
-    //   await makepostBusy();
-    // }
+              break;
+            }
+          }
+        }
+        if (filter.countryName != null) {
+          setCurrentCountry(filter.countryName!);
+          updateTags(0, _currentCountry);
+        }
+      }
+      setPostsBusy(false);
+      await makepostBusy();
+    }
   }
 
   Future<void> onMoreTap(Post post) async {
@@ -348,4 +375,11 @@ class EntertainersViewModel extends FutureViewModel<List<Post>> {
       log.d(posts);
     }
   }
+
+  void launchURL(_url) async {
+    log.i(_url);
+    if (!await launch(_url)) throw 'Could not launch';
+  }
+
+  void onOrderNow() => _navigationService.navigateTo(Routes.aboutView);
 }

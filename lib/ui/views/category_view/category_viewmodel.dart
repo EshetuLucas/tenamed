@@ -27,8 +27,8 @@ class CategoryViewModel extends FutureViewModel<void> {
   }
 
   void onEventTap(Event event) {
-    _navigationService.navigateTo(Routes.eventDetailView,
-        arguments: EventDetailViewArguments(event: event));
+    // _navigationService.navigateTo(Routes.eventDetailView,
+    //     arguments: EventDetailViewArguments(event: event));
   }
 
   void onBackButtonTap() => _navigationService.back();

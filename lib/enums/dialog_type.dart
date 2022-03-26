@@ -1,7 +1,1 @@
-enum DialogType {
-  ERROR,
-  SUCCESS,
-  DELETE,
-  LANGUAGE,
-  DELETING,
-}
+enum DialogType { ERROR, SUCCESS, DELETE, LANGUAGE, DELETING, LOCATION }

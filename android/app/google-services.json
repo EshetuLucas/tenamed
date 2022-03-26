@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "966090317486",
+    "project_id": "tenamed",
+    "storage_bucket": "tenamed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966090317486:android:10e31f9dbf1b4394a0d73f",
+        "android_client_info": {
+          "package_name": "com.example.health"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966090317486-si5vrg07cld9kfeo1e7635628dba9je7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDye1CbrYfRHHOgDtk7BC-LRiH77tsg8_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "966090317486-si5vrg07cld9kfeo1e7635628dba9je7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966090317486:android:9b87813c684d594ba0d73f",
+        "android_client_info": {
+          "package_name": "com.example.tena_med_pharmacy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966090317486-si5vrg07cld9kfeo1e7635628dba9je7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDye1CbrYfRHHOgDtk7BC-LRiH77tsg8_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "966090317486-si5vrg07cld9kfeo1e7635628dba9je7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

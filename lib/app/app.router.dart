@@ -7,18 +7,17 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 
-import '../datamodels/app_data_model.dart';
 import '../datamodels/post/post_model.dart';
 import '../ui/views/about/about_viewmodel.dart';
 import '../ui/views/account/account_view.dart';
+import '../ui/views/appointment/appointment_view.dart';
 import '../ui/views/category_view/category_view.dart';
 import '../ui/views/comment/comment_view.dart';
-import '../ui/views/event_detail/event_detail_view.dart';
 import '../ui/views/home/home_view.dart';
+import '../ui/views/item_category/item_category_detail_view.dart';
 import '../ui/views/login/login_view.dart';
 import '../ui/views/post/post_view.dart';
 import '../ui/views/preference/preference_view.dart';
@@ -32,7 +31,6 @@ import '../ui/views/startup/startup_view.dart';
 
 class Routes {
   static const String homeView = '/home-view';
-  static const String eventDetailView = '/event-detail-view';
   static const String categoriesView = '/categories-view';
   static const String loginView = '/login-view';
   static const String signUpView = '/sign-up-view';
@@ -47,9 +45,10 @@ class Routes {
   static const String addressView = '/address-view';
   static const String bankDetailView = '/bank-detail-view';
   static const String profileUploadView = '/profile-upload-view';
+  static const String appointmentView = '/appointment-view';
+  static const String iteamCategoryView = '/iteam-category-view';
   static const all = <String>{
     homeView,
-    eventDetailView,
     categoriesView,
     loginView,
     signUpView,
@@ -64,6 +63,8 @@ class Routes {
     addressView,
     bankDetailView,
     profileUploadView,
+    appointmentView,
+    iteamCategoryView,
   };
 }
 
@@ -72,7 +73,6 @@ class StackedRouter extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.homeView, page: HomeView),
-    RouteDef(Routes.eventDetailView, page: EventDetailView),
     RouteDef(Routes.categoriesView, page: CategoriesView),
     RouteDef(Routes.loginView, page: LoginView),
     RouteDef(Routes.signUpView, page: SignUpView),
@@ -87,6 +87,8 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.addressView, page: AddressView),
     RouteDef(Routes.bankDetailView, page: BankDetailView),
     RouteDef(Routes.profileUploadView, page: ProfileUploadView),
+    RouteDef(Routes.appointmentView, page: AppointmentView),
+    RouteDef(Routes.iteamCategoryView, page: IteamCategoryView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -95,18 +97,6 @@ class StackedRouter extends RouterBase {
       return CupertinoPageRoute<dynamic>(
         builder: (context) => HomeView(),
         settings: data,
-      );
-    },
-    EventDetailView: (data) {
-      var args = data.getArgs<EventDetailViewArguments>(nullOk: false);
-      return PageRouteBuilder<dynamic>(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            EventDetailView(
-          event: args.event,
-          key: args.key,
-        ),
-        settings: data,
-        transitionsBuilder: TransitionsBuilders.fadeIn,
       );
     },
     CategoriesView: (data) {
@@ -222,19 +212,30 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    AppointmentView: (data) {
+      return CupertinoPageRoute<dynamic>(
+        builder: (context) => const AppointmentView(),
+        settings: data,
+      );
+    },
+    IteamCategoryView: (data) {
+      var args = data.getArgs<IteamCategoryViewArguments>(nullOk: false);
+      return CupertinoPageRoute<dynamic>(
+        builder: (context) => IteamCategoryView(
+          buttonName: args.buttonName,
+          name: args.name,
+          items: args.items,
+          key: args.key,
+        ),
+        settings: data,
+      );
+    },
   };
 }
 
 /// ************************************************************************
 /// Arguments holder classes
 /// *************************************************************************
-
-/// EventDetailView arguments holder class
-class EventDetailViewArguments {
-  final Event event;
-  final Key? key;
-  EventDetailViewArguments({required this.event, this.key});
-}
 
 /// CategoriesView arguments holder class
 class CategoriesViewArguments {
@@ -285,4 +286,14 @@ class AddressViewArguments {
 class BankDetailViewArguments {
   final Key? key;
   BankDetailViewArguments({this.key});
+}
+
+/// IteamCategoryView arguments holder class
+class IteamCategoryViewArguments {
+  final String? buttonName;
+  final String name;
+  final List<Map<String, dynamic>> items;
+  final Key? key;
+  IteamCategoryViewArguments(
+      {this.buttonName, required this.name, required this.items, this.key});
 }

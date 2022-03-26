@@ -22,6 +22,9 @@ void setupDialogUi() {
     DialogType.DELETE: (context, sheetRequest, completer) =>
         DeletePostConfirmationDialog(
             request: sheetRequest, completer: completer),
+    DialogType.LOCATION: (context, sheetRequest, completer) =>
+        DeletePostConfirmationDialog(
+            request: sheetRequest, completer: completer),
   };
 
   dialogService.registerCustomDialogBuilders(builders);

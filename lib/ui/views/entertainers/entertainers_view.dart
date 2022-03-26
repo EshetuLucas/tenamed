@@ -42,7 +42,7 @@ class EntertainersView extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             foregroundColor: kcWhite,
             backgroundColor: kcPrimaryColor,
-            onPressed: model.onAddPost,
+            onPressed: () => model.launchURL('https://t.me/tenamed'),
             child: Icon(
               Icons.message,
             ),
@@ -122,42 +122,54 @@ class EntertainersView extends StatelessWidget {
                                                             verticalSpaceSmall,
                                                             Row(
                                                               children: [
-                                                                Card(
-                                                                  color:
-                                                                      kcPrimaryColor,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.all(
-                                                                            9.0),
-                                                                    child: Text(
-                                                                      'Order now',
-                                                                      style: ktsWhiteSmallTextStyle
-                                                                          .copyWith(
-                                                                        color:
-                                                                            kcAppBackgroundColor,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
+                                                                GestureDetector(
+                                                                  onTap: model
+                                                                      .onOrderNow,
+                                                                  child: Card(
+                                                                    color:
+                                                                        kcPrimaryColor,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              9.0),
+                                                                      child:
+                                                                          Text(
+                                                                        'Order now',
+                                                                        style: ktsWhiteSmallTextStyle
+                                                                            .copyWith(
+                                                                          color:
+                                                                              kcAppBackgroundColor,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                                Card(
-                                                                  color:
-                                                                      kcPrimaryColor,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.all(
-                                                                            9.0),
-                                                                    child: Text(
-                                                                      'Call us',
-                                                                      style: ktsWhiteSmallTextStyle
-                                                                          .copyWith(
-                                                                        color:
-                                                                            kcAppBackgroundColor,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
+                                                                GestureDetector(
+                                                                  onTap: () => model
+                                                                      .launchURL(
+                                                                    'tel: +822',
+                                                                  ),
+                                                                  child: Card(
+                                                                    color:
+                                                                        kcPrimaryColor,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              9.0),
+                                                                      child:
+                                                                          Text(
+                                                                        'Call us',
+                                                                        style: ktsWhiteSmallTextStyle
+                                                                            .copyWith(
+                                                                          color:
+                                                                              kcAppBackgroundColor,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ),
@@ -268,40 +280,44 @@ class _GeneralCategories extends ViewModelWidget<EntertainersViewModel> {
               startColor: kcAppBackgroundColor.withOpacity(0.5),
               endColor: kcAppBackgroundColor,
               loading: model.busyHeader,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(9),
-                ),
-                elevation: 3,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ImageBuilder(
-                        height: screenWidthFraction(
-                          context,
-                          dividedBy: 8,
-                        ),
-                        width: screenWidthFraction(
-                          context,
-                          dividedBy: 8,
-                        ),
-                        assetName: Categories[index]['icon'],
-                      ),
-                      verticalSpaceSmall,
-                      Text(
-                        Categories[index]['title'],
-                      ),
-                      FittedBox(
-                        child: Text(
-                          Categories[index]['subTitle'],
-                          style: ktsLightGreySmallTextStyle.copyWith(
-                            color: kcLightBlue,
+              child: GestureDetector(
+                onTap: () => model.onItemTap(
+                    Categories[index]['title'], Categories[index]['items']),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                  elevation: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ImageBuilder(
+                          height: screenWidthFraction(
+                            context,
+                            dividedBy: 8,
                           ),
+                          width: screenWidthFraction(
+                            context,
+                            dividedBy: 8,
+                          ),
+                          assetName: Categories[index]['icon'],
                         ),
-                      )
-                    ],
+                        verticalSpaceSmall,
+                        Text(
+                          Categories[index]['title'],
+                        ),
+                        FittedBox(
+                          child: Text(
+                            Categories[index]['subTitle'],
+                            style: ktsLightGreySmallTextStyle.copyWith(
+                              color: kcLightBlue,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -461,17 +477,18 @@ class Header extends HookViewModelWidget<EntertainersViewModel> {
           children: [
             Expanded(
               child: Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 10),
-                  child: SearchBar(
-                    onClose: () {
-                      searchController.text = '';
-                      model.onChange('');
-                      FocusScope.of(context).unfocus();
-                    },
-                    onChange: model.onChange,
-                    loading: model.busyHeader,
-                    controller: searchController,
-                  )),
+                padding: const EdgeInsets.only(left: 15, right: 10),
+                child: SearchBar(
+                  onClose: () {
+                    searchController.text = '';
+                    model.onChange('');
+                    FocusScope.of(context).unfocus();
+                  },
+                  onChange: model.onChange,
+                  loading: model.busyHeader,
+                  controller: searchController,
+                ),
+              ),
             ),
             Material(
               elevation: model.isBusy ? 0 : 6,

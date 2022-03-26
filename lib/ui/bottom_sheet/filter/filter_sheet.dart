@@ -92,20 +92,20 @@ class _Header extends ViewModelWidget<FilterSheetViewModel> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(children: [
-                            AppCategory(
-                              loading: false,
-                              text: 'My preference',
-                              onTap: () => model.onDone(),
-                            ),
-                            horizontalSpaceSmall,
-                          ]),
-                        ),
+                        // SingleChildScrollView(
+                        //   scrollDirection: Axis.horizontal,
+                        //   child: Row(children: [
+                        //     AppCategory(
+                        //       loading: false,
+                        //       text: 'My preference',
+                        //       onTap: () => model.onDone(),
+                        //     ),
+                        //     horizontalSpaceSmall,
+                        //   ]),
+                        // ),
                         verticalSpaceMedium,
                         Text(
-                          'Select Country',
+                          'Brands',
                           style: ktsDarkGreyTextStyle,
                         ),
                         verticalSpaceSmall,
@@ -135,7 +135,7 @@ class _Header extends ViewModelWidget<FilterSheetViewModel> {
                         AppDivider(),
                         verticalSpaceMedium,
                         Text(
-                          'Select Platform',
+                          'Discount',
                           style: ktsDarkGreyTextStyle,
                         ),
                         verticalSpaceSmall,
@@ -165,7 +165,7 @@ class _Header extends ViewModelWidget<FilterSheetViewModel> {
                         AppDivider(),
                         verticalSpaceMedium,
                         Text(
-                          'Select Category',
+                          'Product Form',
                           style: ktsDarkGreyTextStyle,
                         ),
                         verticalSpaceSmall,
@@ -195,7 +195,7 @@ class _Header extends ViewModelWidget<FilterSheetViewModel> {
                         AppDivider(),
                         verticalSpaceMedium,
                         Text(
-                          'Select sub-category',
+                          'Age',
                           style: ktsDarkGreyTextStyle,
                         ),
                         verticalSpaceSmall,

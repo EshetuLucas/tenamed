@@ -18,10 +18,10 @@ class FilterSheetViewModel extends BaseViewModel {
   final _snackbarService = locator<SnackbarService>();
 
   List<String> _tags = [
-    'All Country',
-    'All Platform',
-    'All Category',
-    'All sub-category'
+    'All Brands',
+    'All',
+    'All Form',
+    'All',
   ];
   List<Sector> get sectors =>
       [Sector(id: -1, name: 'All'), ..._userService.sectors];
@@ -31,10 +31,10 @@ class FilterSheetViewModel extends BaseViewModel {
   List<SubCategory> get subCategories => _userService.subCategories;
 
   List<List<dynamic>> get _subLists => [
-        All,
-        platforms,
-        categories,
-        subCategories,
+        ['Nivea', 'Dove'],
+        ['Less than 10%', '10% & above', '20% & above'],
+        ['Capsule', 'Tablet', 'Oil', 'Soap', 'Powder', 'Cream'],
+        ['All', 'Child', 'Adult', 'Elderly'],
       ];
 
   List<String> get tags => _tags;
@@ -48,15 +48,7 @@ class FilterSheetViewModel extends BaseViewModel {
 
   Future<void> onCategories(int index) async {
     log.i('index:$index');
-    if (index == 2 && _tags[1] == 'All Platform') {
-      _snackbarService.showCustomSnackBar(
-        variant: SnackbarType.BASIC,
-        message: 'Please select platform',
-        duration: const Duration(seconds: 2),
-      );
-      notifyListeners();
-      return;
-    }
+
     if (index == 3 && _tags[2] == 'All Category') {
       _snackbarService.showCustomSnackBar(
         variant: SnackbarType.BASIC,
@@ -70,45 +62,42 @@ class FilterSheetViewModel extends BaseViewModel {
     final resut = await _bottomSheetService.showCustomSheet(
       isScrollControlled: false,
       variant: BottomSheetType.EVENT_MORE_TYPE,
-      customData: index == 2
-          ? List.from(_subLists[index]
-              .where((element) => element.platform.id == filterList.platformId)
-              .toList())
-          : _subLists[index],
+      customData: _subLists[index],
     );
     if (resut != null) {
-      int id = _subLists[index][resut.data].id;
-      switch (index) {
-        case 0:
-          filterList = filterList.copyWith(
-              countryName: _subLists[index][resut.data].name);
-          break;
-        case 1:
-          filterList = filterList.copyWith(platformId: id);
-          break;
-        case 2:
-          filterList = filterList.copyWith(categoryId: id);
-          break;
-        case 3:
-          filterList = filterList.copyWith(subCategoryId: id);
-          break;
+      // int id = _subLists[index][resut.data].id;
+      // switch (index) {
+      //   case 0:
+      //     filterList = filterList.copyWith(
+      //         countryName: _subLists[index][resut.data].name);
+      //     break;
+      //   case 1:
+      //     filterList = filterList.copyWith(platformId: id);
+      //     break;
+      //   case 2:
+      //     filterList = filterList.copyWith(categoryId: id);
+      //     break;
+      //   case 3:
+      //     filterList = filterList.copyWith(subCategoryId: id);
+      //     break;
 
-        default:
-      }
-      updateTags(index, _subLists[index][resut.data].name);
+      //   default:
+      // }
+      updateTags(index, _subLists[index][resut.data]);
     }
   }
 
   Future<void> onPickCountry() async {
-    log.i('');
-    final result = await _bottomSheetService.showCustomSheet(
-      isScrollControlled: false,
-      variant: BottomSheetType.COUNTRY_PICKER,
-    );
-    if (result != null) {
-      filterList = filterList.copyWith(countryName: result.data.name);
-      updateTags(0, result.data.name);
-    }
+    onCategories(0);
+    // log.i('');
+    // final result = await _bottomSheetService.showCustomSheet(
+    //   isScrollControlled: false,
+    //   variant: BottomSheetType.COUNTRY_PICKER,
+    // );
+    // if (result != null) {
+    //   filterList = filterList.copyWith(countryName: result.data.name);
+    //   updateTags(0, result.data.name);
+    // }
   }
 
   void onDone() {

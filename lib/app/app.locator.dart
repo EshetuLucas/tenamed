@@ -16,7 +16,9 @@ import '../api/put_apis.dart';
 import '../services/cloud_storage_service.dart';
 import '../services/crop_image_service.dart';
 import '../services/event_service.dart';
+import '../services/location_service.dart';
 import '../services/media_services.dart';
+import '../services/pharmacy_service.dart';
 import '../services/post_service.dart';
 import '../services/shared_preferences_service.dart';
 import '../services/user_service.dart';
@@ -43,6 +45,8 @@ Future setupLocator(
   locator.registerLazySingleton(() => CropImageService());
   locator.registerLazySingleton(() => MediaService());
   locator.registerLazySingleton(() => CloudStorageService());
+  locator.registerLazySingleton(() => PharamcyService());
+  locator.registerLazySingleton(() => LocationService());
   final sharedPreferencesService = await SharedPreferencesService.getInstance();
   locator.registerSingleton(sharedPreferencesService);
 }
